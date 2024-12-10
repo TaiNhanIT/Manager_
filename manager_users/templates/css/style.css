@@ -1,0 +1,13 @@
+/* CSS PROJECT*/
+.mg-form{
+    margin-bottom: 10px;
+}
+.mg-btn{
+margin-top:20px;
+    width: 100%;
+}
+.error{
+    color:red;
+    font-size: 90%;
+    font-style: italic;
+}
