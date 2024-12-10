@@ -89,14 +89,35 @@ if (isPost()) {
         if($insertStatus){
             setFlashData('smg','Bạn đã đăng ký thành công!!!');
             setFlashData('smg_type','success');
+            //Tạo link kích hoạt
+            $linkActive = _WEB_HOST.'?module=auth&action=active&token='.$activeToken;
+            //Thiết lập gửi mail
+            $subject = $filterAll['fullname'].'Vui lòng kích hoạt tài khoản của bạn!!!';
+            $content = 'Chào'.' '.$filterAll['fullname'].'.</br>';
+            $content .= 'Vui lòng nhấp vào link dưới đây để có thể kích hoạt tài khoản của bạn: </br>';
+            $content .= $linkActive. '</br>';
+            $content .= ' '.'Trân trọng cảm ơn bạn!!!';
+            //tiến hành gửi mail
+            $sendMail = sendMail($filterAll['email'],$subject,$content);
+
+            if ($sendMail) {
+                setFlashData('smg','Đăng ký thành công, vui lòng kiểm tra email của bạn để có thể kích hoạt tài khoản');
+                setFlashData('smg_type','success');
+            }else{
+                setFlashData('smg','Hệ thống đang gặp sự cố, vui lòng thử lại sau');
+                setFlashData('smg_type','danger');
+            }
+        }else{
+            setFlashData('smg','Đăng ký không thành công!!');
+            setFlashData('smg_type','danger');
         }
-        redirect("?module=auth&action=register");
+        //redirect("?module=auth&action=register");
     } else {
         setFlashData('smg', 'Vui lòng kiểm tra lại dữ liệu của bạn!!!');
         setFlashData('smg_type', 'Danger');
         setFlashData('errors', $errors);
         setFlashData('old', $filterAll);
-        redirect("?module=auth&action=register");
+        //redirect("?module=auth&action=register");
     }
 }
 layouts('header', $data);

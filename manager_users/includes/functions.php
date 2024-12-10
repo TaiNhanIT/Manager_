@@ -36,11 +36,20 @@ function sendMail($to, $subject, $content)
 
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
-
+        $mail->CharSet = 'UTF-8';
         $mail->Subject = $subject;
         $mail->Body = $content;
-
-        $mail->send();
+        //PHP Mailer SSL certificate verify failed
+        $mail -> SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
+        $sendMail = $mail->send();
+        if($sendMail) {}
+        return $sendMail;
         echo 'Mail đã được gửi thành công';
     } catch (Exception $e) {
         echo "Gửi Mail thất bại. Mailer Error: {$mail->ErrorInfo}";
